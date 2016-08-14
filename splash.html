@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+	<head>
+		<title>Splash demo</title>
+
+		<link rel="icon" href="favicon.ico"/>
+		<meta name="viewport" content="width=device-width"/>
+
+		<style>
+			/*
+				This will hide all elements with below attribute or class name.
+				Once angular is bootstrapped, it will remove these attributes or classes from those elements hence making them visible.
+			*/
+			[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+			  display: none !important;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<!-- START : Splash screen -->
+		<style>
+			splash-screen{
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				align-content: center;
+
+				position: fixed;
+				z-index: 10000;
+				background-color: #fff;
+				top:0;
+				right:0;
+				bottom:0;
+				left:0;
+
+				opacity: 1;
+				transition: opacity 0.3s ease-in-out;
+			}
+
+			splash-screen._splash_fade_out{
+				opacity: 0;
+			}
+		</style>
+		<splash-screen>
+			<span>App is loading...</span>
+		</splash-screen>
+		<!-- END : Splash screen -->
+
+		<!-- Header -->
+		<ng-include src="'includes/header.html'" ng-cloak></ng-include>
+
+		<!-- Sidebar -->
+		<ng-include src="'includes/sidenav.html'" ng-cloak></ng-include>
+
+		<!-- ui-view -->
+		<div ui-view ui-stater ng-cloak></div>
+
+		<!-- Footer -->
+		<ng-include src="'includes/footer.html'" ng-cloak></ng-include>
+
+		<!-- ######################################################################### -->
+
+		<!-- External JS -->
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+
+		<!-- External JS -->
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc.5/angular-material.min.css"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/hammerjs/2.0.8/hammer.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/threejs/r76/three.min.js"></script>
+
+		<!-- APP -->
+		<script>
+			angular
+			.module('myApp', [])
+			.directive('splashScreen', ['$timeout', function($timeout){
+				return {
+					restrict : 'E',
+					link : function(scope, elem, attr){
+						// fade it out for 300 milliseconds (see css)
+						elem.addClass('_splash_fade_out');
+
+						// remove splash screen after animation is completed
+						$timeout(function(){
+							elem.remove();
+							scope = elem = attr = null;
+						}, 300);
+					}
+				}
+			}]);
+		</script>
+	</body>
+</html>
